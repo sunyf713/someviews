@@ -52,8 +52,8 @@ class CircleProgressBar(context:Context?, attrs:AttributeSet): View(context,attr
         canvas?.drawOval(rectF,paint)
         paint.color = bloodColor
         canvas?.drawArc(rectF,-90f,angleProgress,false,paint)
-        val offset = (fontMetrics.ascent-fontMetrics.descent)/2
-        canvas?.drawText("happy halloween", centerX.toFloat(), centerY.toFloat(),textPaint)
+        val offset = (fontMetrics.ascent+fontMetrics.descent)/2
+        canvas?.drawText("happy halloween", centerX.toFloat(), centerY.toFloat()-offset,textPaint)
 
     }
 
