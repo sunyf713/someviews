@@ -6,15 +6,15 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
 import android.view.View
+import com.sunyf713.view.viewexercise.BitmapUtil
 import com.sunyf713.view.viewexercise.DpUtil
-import com.sunyf713.view.viewexercise.R
 
 class AvatarView(context:Context?, attrs:AttributeSet): View(context,attrs){
 
-    private var paint:Paint
+    private var paint:Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var centerX = 0
     private var centerY = 0
-    private val redius = DpUtil.dp2px(100f)
+    private val radius = DpUtil.dp2px(100f)
     private val padding = DpUtil.dp2px(10f)
     private var rectF:RectF = RectF()
     private var rectFP:RectF = RectF()
@@ -22,7 +22,6 @@ class AvatarView(context:Context?, attrs:AttributeSet): View(context,attrs){
 
     init {
 
-        paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.style = Paint.Style.FILL
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
@@ -33,8 +32,8 @@ class AvatarView(context:Context?, attrs:AttributeSet): View(context,attrs){
         super.onSizeChanged(w, h, oldw, oldh)
         centerX = width/2
         centerY = height/2
-        rectF.set(centerX-redius,centerY-redius,centerX+redius,centerY+redius)
-        rectFP.set(centerX+padding-redius, padding + centerY-redius, -padding +centerX+redius, -padding + centerY+redius)
+        rectF.set(centerX-radius,centerY-radius,centerX+radius,centerY+radius)
+        rectFP.set(centerX+padding-radius, padding + centerY-radius, -padding +centerX+radius, -padding + centerY+radius)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -44,19 +43,10 @@ class AvatarView(context:Context?, attrs:AttributeSet): View(context,attrs){
         val count = canvas?.saveLayer(rectF,paint)
         canvas?.drawOval(rectFP, paint)
         paint.xfermode = xfermode
-        canvas?.drawBitmap(getBitmap(((redius-padding)*2).toInt()),centerX+padding-redius,padding + centerY-redius,paint)
+        canvas?.drawBitmap(BitmapUtil.getBitmap(resources,((radius-padding)*2).toInt()),centerX+padding-radius,padding + centerY-radius,paint)
         paint.xfermode = null
         canvas?.restoreToCount(count!!)
 
     }
 
-    private fun getBitmap(width:Int):Bitmap{
-        val option = BitmapFactory.Options()
-        option.inJustDecodeBounds = true
-        BitmapFactory.decodeResource(resources,R.drawable.header,option)
-        option.inJustDecodeBounds = false
-        option.inDensity = option.outWidth
-        option.inTargetDensity = width
-        return BitmapFactory.decodeResource(resources,R.drawable.header,option)
-    }
 }

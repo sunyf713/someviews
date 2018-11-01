@@ -10,21 +10,18 @@ import com.sunyf713.view.viewexercise.DpUtil
 
 class DashBoard(context: Context?,attrs:AttributeSet) : View(context,attrs) {
 
-    private var REDIUS = DpUtil.dp2px(100f)
-    private var EMPTY_ANGLE = 120f
+    private val radius = DpUtil.dp2px(100f)
+    private var emptyAngle = 120f
     private var paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var arcPath:Path
-    private var dashPath:Path
-    private var pathMeasure:PathMeasure
+    private var arcPath:Path = Path()
+    private var dashPath:Path = Path()
+    private var pathMeasure:PathMeasure = PathMeasure()
     private lateinit var dashPathEffect:PathDashPathEffect
-    private var DASH_AMOUNT = 20f
+    private var dashAmount = 20f
     private var centerX:Int = 0
     private var centerY:Int = 0
 
     init {
-        pathMeasure = PathMeasure()
-        arcPath = Path()
-        dashPath = Path()
         paint.color = Color.BLACK
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = DpUtil.dp2px(2f)
@@ -36,10 +33,13 @@ class DashBoard(context: Context?,attrs:AttributeSet) : View(context,attrs) {
         super.onSizeChanged(w, h, oldw, oldh)
         centerX = w/2
         centerY = h/2
-        dashPath.addRect(0f,0f,DpUtil.dp2px(2f),DpUtil.dp2px(10f),Path.Direction.CW);
-        arcPath .addArc(centerX-REDIUS,centerY-REDIUS,centerX+REDIUS,centerY+REDIUS,90+EMPTY_ANGLE/2,360-EMPTY_ANGLE);
-        pathMeasure.setPath(arcPath,false);
-        dashPathEffect = PathDashPathEffect(dashPath,(pathMeasure.length-DpUtil.dp2px(2f))/DASH_AMOUNT,0f,PathDashPathEffect.Style.ROTATE)
+        dashPath.addRect(0f,0f,DpUtil.dp2px(2f),DpUtil.dp2px(10f),Path.Direction.CW)
+        arcPath .addArc(centerX-radius,centerY-radius,centerX+radius,
+                centerY+radius,90+emptyAngle/2,360-emptyAngle)
+        pathMeasure.setPath(arcPath,false)
+        dashPathEffect = PathDashPathEffect(dashPath,
+                (pathMeasure.length-DpUtil.dp2px(2f))/dashAmount,
+                0f,PathDashPathEffect.Style.ROTATE)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -49,11 +49,13 @@ class DashBoard(context: Context?,attrs:AttributeSet) : View(context,attrs) {
         paint.pathEffect = dashPathEffect
         canvas?.drawPath(arcPath,paint)
         paint.pathEffect = null
-        var angle = getAngleFromMark(2)
-        canvas?.drawLine(centerX.toFloat(), centerY.toFloat(), (centerX+Math.cos(Math.toRadians(angle.toDouble()))*DpUtil.dp2px(50f)).toFloat(),(centerY+Math.sin(Math.toRadians(angle.toDouble()))*DpUtil.dp2px(50f)).toFloat(),paint)
+        val angle = getAngleFromMark(2)
+        canvas?.drawLine(centerX.toFloat(), centerY.toFloat(),
+                (centerX+Math.cos(Math.toRadians(angle.toDouble()))*DpUtil.dp2px(50f)).toFloat(),
+                (centerY+Math.sin(Math.toRadians(angle.toDouble()))*DpUtil.dp2px(50f)).toFloat(),paint)
     }
 
     private fun getAngleFromMark(mark:Int):Float{
-        return 90+EMPTY_ANGLE/2f+(360f-EMPTY_ANGLE)/20f*mark
+        return 90+emptyAngle/2f+(360f-emptyAngle)/20f*mark
     }
 }

@@ -33,7 +33,7 @@ class CircleProgressBar(context:Context?, attrs:AttributeSet): View(context,attr
         textPaint.textAlign = Paint.Align.CENTER
         textPaint.getFontMetrics(fontMetrics)
         progress = 80
-        angleProgress =360/100f*progress;
+        angleProgress =360/100f*progress
 
 
     }
