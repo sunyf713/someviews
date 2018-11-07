@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="MaterialEditText">
+        <attr name="material_style">
+            <enum name="open" value="0"/>
+            <enum name="close" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

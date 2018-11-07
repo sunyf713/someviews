@@ -1,11 +1,7 @@
 package com.sunyf713.view.viewexercise
 
-import android.animation.ObjectAnimator
-import android.animation.TypeEvaluator
-import android.graphics.Point
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.animation.BounceInterpolator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +13,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        camera_view.postDelayed(Runnable {
+            kotlin.run {
+                camera_view.closeMaterial()
+            }
+        },5000)
+        camera_view.postDelayed(Runnable {
+            kotlin.run {
+                camera_view.openMaterial()
+            }
+        },10000)
 //        val objectAnimator1: ObjectAnimator  =  ObjectAnimator.ofFloat(camera_view,"rotate",45f)
 //        objectAnimator1.duration = 1000
 //        val objectAnimator2: ObjectAnimator  =  ObjectAnimator.ofFloat(camera_view,"angle",270f)
@@ -75,19 +80,19 @@ class MainActivity : AppCompatActivity() {
 //        animatorSet.start()
 
 
-        val objectAnimator = ObjectAnimator.ofObject(camera_view,"point",PointTypeEvalutor(),Point(DpUtil.dp2px(100f).toInt(), DpUtil.dp2px(100f).toInt()))
-        objectAnimator.interpolator = BounceInterpolator()
-        objectAnimator.startDelay=3000
-        objectAnimator.duration=3000
-        objectAnimator.start()
+//        val objectAnimator = ObjectAnimator.ofObject(camera_view,"point",PointTypeEvalutor(),Point(DpUtil.dp2px(100f).toInt(), DpUtil.dp2px(100f).toInt()))
+//        objectAnimator.interpolator = BounceInterpolator()
+//        objectAnimator.startDelay=3000
+//        objectAnimator.duration=3000
+//        objectAnimator.start()
     }
 
 
-    class PointTypeEvalutor:TypeEvaluator<Point>{
-        override fun evaluate(fraction: Float, startValue: Point?, endValue: Point?): Point {
-            return Point((startValue!!.x+fraction*(endValue!!.x-startValue.x)).toInt(), (startValue.y+fraction*(endValue.y-startValue.y)).toInt())
-        }
-
-    }
+//    class PointTypeEvalutor:TypeEvaluator<Point>{
+//        override fun evaluate(fraction: Float, startValue: Point?, endValue: Point?): Point {
+//            return Point((startValue!!.x+fraction*(endValue!!.x-startValue.x)).toInt(), (startValue.y+fraction*(endValue.y-startValue.y)).toInt())
+//        }
+//
+//    }
 
 }
